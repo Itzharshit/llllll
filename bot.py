@@ -1,3 +1,4 @@
+# (c) @AbirHasan2005
 
 import os
 import time
@@ -24,8 +25,6 @@ BOT_TOKEN = Config.BOT_TOKEN
 API_ID = Config.API_ID
 API_HASH = Config.API_HASH
 DB_CHANNEL = Config.DB_CHANNEL
-ABOUT_BOT_TEXT = Config.ABOUT_BOT_TEXT
-ABOUT_DEV_TEXT = Config.ABOUT_DEV_TEXT
 HOME_TEXT = Config.HOME_TEXT
 BOT_OWNER = Config.BOT_OWNER
 FORWARD_AS_COPY = Config.FORWARD_AS_COPY
@@ -131,7 +130,10 @@ async def start(bot, cmd):
                         InlineKeyboardButton("Support Group", url="https://t.me/linux_repo"),
                         InlineKeyboardButton("Bots Channel", url="https://t.me/Discovery_Updates")
                     ],
-                    
+                    [
+                        InlineKeyboardButton("About Bot", callback_data="aboutbot"),
+                        InlineKeyboardButton("About Dev", callback_data="aboutdevs")
+                    ]
                 ]
             )
         )
@@ -295,10 +297,77 @@ async def main(bot, message):
         except Exception as err:
             print(f"Error: {err}")
 
+
+@Bot.on_message(filters.private & filters.command("broadcast") & filters.user(BOT_OWNER) & filters.reply)
+async def broadcast_(c, m):
+    all_users = await db.get_all_users()
+    broadcast_msg = m.reply_to_message
+    while True:
+        broadcast_id = ''.join([random.choice(string.ascii_letters) for i in range(3)])
+        if not broadcast_ids.get(broadcast_id):
+            break
+    out = await m.reply_text(
+        text=f"Broadcast Started! You will be notified with log file when all the users are notified."
+    )
+    start_time = time.time()
+    total_users = await db.total_users_count()
+    done = 0
+    failed = 0
+    success = 0
+    broadcast_ids[broadcast_id] = dict(
+        total=total_users,
+        current=done,
+        failed=failed,
+        success=success
+    )
+    async with aiofiles.open('broadcast.txt', 'w') as broadcast_log_file:
+        async for user in all_users:
+            sts, msg = await send_msg(
+                user_id=int(user['id']),
+                message=broadcast_msg
+            )
+            if msg is not None:
+                await broadcast_log_file.write(msg)
+            if sts == 200:
+                success += 1
+            else:
+                failed += 1
+            if sts == 400:
+                await db.delete_user(user['id'])
+            done += 1
+            if broadcast_ids.get(broadcast_id) is None:
+                break
+            else:
+                broadcast_ids[broadcast_id].update(
+                    dict(
+                        current=done,
+                        failed=failed,
+                        success=success
+                    )
+                )
+    if broadcast_ids.get(broadcast_id):
+        broadcast_ids.pop(broadcast_id)
+    completed_in = datetime.timedelta(seconds=int(time.time() - start_time))
+    await asyncio.sleep(3)
+    await out.delete()
+    if failed == 0:
+        await m.reply_text(
+            text=f"broadcast completed in `{completed_in}`\n\nTotal users {total_users}.\nTotal done {done}, {success} success and {failed} failed.",
+            quote=True
+        )
+    else:
+        await m.reply_document(
+            document='broadcast.txt',
+            caption=f"broadcast completed in `{completed_in}`\n\nTotal users {total_users}.\nTotal done {done}, {success} success and {failed} failed.",
+            quote=True
+        )
+    os.remove('broadcast.txt')
+
+
 @Bot.on_message(filters.private & filters.command("status") & filters.user(BOT_OWNER))
 async def sts(c, m):
     total_users = await db.total_users_count()
-    await m.reply_text(text=f"**𝐓𝐨𝐭𝐚𝐥 𝐔𝐬𝐞𝐫𝐬:** `{total_users}`", parse_mode="Markdown", quote=True)
+    await m.reply_text(text=f"**Total Users in DB:** `{total_users}`", parse_mode="Markdown", quote=True)
 
 
 @Bot.on_message(filters.private & filters.command("ban_user") & filters.user(BOT_OWNER))
@@ -393,7 +462,115 @@ async def _banned_usrs(c, m):
     await m.reply_text(reply_text, True)
 
 
-
+@Bot.on_callback_query()
+async def button(bot, cmd: CallbackQuery):
+    cb_data = cmd.data
+    if "aboutbot" in cb_data:
+        await cmd.message.edit(
+            ABOUT_BOT_TEXT,
+            parse_mode="Markdown",
+            disable_web_page_preview=True,
+            reply_markup=InlineKeyboardMarkup(
+                [
+                    [
+                        InlineKeyboardButton("Source Codes of Bot",
+                                             url="https://github.com/AbirHasan2005/PyroFilesStoreBot")
+                    ],
+                    [
+                        InlineKeyboardButton("Go Home", callback_data="gotohome"),
+                        InlineKeyboardButton("About Dev", callback_data="aboutdevs")
+                    ]
+                ]
+            )
+        )
+    elif "aboutdevs" in cb_data:
+        await cmd.message.edit(
+            ABOUT_DEV_TEXT,
+            parse_mode="Markdown",
+            disable_web_page_preview=True,
+            reply_markup=InlineKeyboardMarkup(
+                [
+                    [
+                        InlineKeyboardButton("Source Codes of Bot",
+                                             url="https://github.com/AbirHasan2005/PyroFilesStoreBot")
+                    ],
+                    [
+                        InlineKeyboardButton("About Bot", callback_data="aboutbot"),
+                        InlineKeyboardButton("Go Home", callback_data="gotohome")
+                    ]
+                ]
+            )
+        )
+    elif "gotohome" in cb_data:
+        await cmd.message.edit(
+            HOME_TEXT.format(cmd.message.chat.first_name, cmd.message.chat.id),
+            parse_mode="Markdown",
+            disable_web_page_preview=True,
+            reply_markup=InlineKeyboardMarkup(
+                [
+                    [
+                        InlineKeyboardButton("Support Group", url="https://t.me/linux_repo"),
+                        InlineKeyboardButton("Bots Channel", url="https://t.me/Discovery_Updates")
+                    ],
+                    [
+                        InlineKeyboardButton("About Bot", callback_data="aboutbot"),
+                        InlineKeyboardButton("About Dev", callback_data="aboutdevs")
+                    ]
+                ]
+            )
+        )
+    elif "refreshmeh" in cb_data:
+        if Config.UPDATES_CHANNEL:
+            invite_link = await bot.create_chat_invite_link(int(Config.UPDATES_CHANNEL))
+            try:
+                user = await bot.get_chat_member(int(Config.UPDATES_CHANNEL), cmd.message.chat.id)
+                if user.status == "kicked":
+                    await cmd.message.edit(
+                        text="Sorry Sir, You are Banned to use me. Contact my [Support Group](https://t.me/linux_repo).",
+                        parse_mode="markdown",
+                        disable_web_page_preview=True
+                    )
+                    return
+            except UserNotParticipant:
+                await cmd.message.edit(
+                    text="**You Still Didn't Join ☹️, Please Join My Updates Channel to use this Bot!**\n\nDue to Overload, Only Channel Subscribers can use the Bot!",
+                    reply_markup=InlineKeyboardMarkup(
+                        [
+                            [
+                                InlineKeyboardButton("🤖 Join Updates Channel", url=invite_link.invite_link)
+                            ],
+                            [
+                                InlineKeyboardButton("🔄 Refresh 🔄", callback_data="refreshmeh")
+                            ]
+                        ]
+                    ),
+                    parse_mode="markdown"
+                )
+                return
+            except Exception:
+                await cmd.message.edit(
+                    text="Something went Wrong. Contact my [Support Group](https://t.me/linux_repo).",
+                    parse_mode="markdown",
+                    disable_web_page_preview=True
+                )
+                return
+        await cmd.message.edit(
+            text=HOME_TEXT.format(cmd.message.chat.first_name, cmd.message.chat.id),
+            parse_mode="Markdown",
+            disable_web_page_preview=True,
+            reply_markup=InlineKeyboardMarkup(
+                [
+                    [
+                        InlineKeyboardButton("Support Group", url="https://t.me/linux_repo"),
+                        InlineKeyboardButton("Bots Channel", url="https://t.me/Discovery_Updates")
+                    ],
+                    [
+                        InlineKeyboardButton("About Bot", callback_data="aboutbot"),
+                        InlineKeyboardButton("About Dev", callback_data="aboutdevs")
+                    ]
+                ]
+            )
+        )
 
 
 Bot.run()
