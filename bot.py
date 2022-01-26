@@ -1,5 +1,3 @@
-# (c) @AbirHasan2005
-
 import os
 import time
 import math
@@ -128,8 +126,8 @@ async def start(bot, cmd):
             reply_markup=InlineKeyboardMarkup(
                 [
                     [
-                        InlineKeyboardButton("Support Group", url=f"{UR_GROUP}"),
-                        InlineKeyboardButton("Bots Channel", url=f"{UR_CHANNEL}")
+                        InlineKeyboardButton("Support Group", url=f"https://telegram.me/{UR_GROUP}"),
+                        InlineKeyboardButton("Bots Channel", url=f"https://telegram.me/{UR_CHANNEL}")
                     ],
                   
                 ]
@@ -143,7 +141,7 @@ async def start(bot, cmd):
                 if user.status == "kicked":
                     await bot.send_message(
                         chat_id=cmd.from_user.id,
-                        text="Sorry Sir, You are Banned.",
+                        text="Sorry, You are Banned.",
                         parse_mode="markdown",
                         disable_web_page_preview=True
                     )
@@ -247,12 +245,12 @@ async def main(bot, message):
                 parse_mode="Markdown", disable_web_page_preview=True)
             share_link = f"https://telegram.me/{BOT_USERNAME}?start={UR_CHANNEL}_{file_er_id}"
             await editable.edit(
-                f"**Your File Stored in my Database!**\n\nHere is the Permanent Link of your file: {share_link} \n\nJust Click the link to get your file!",
+                f"**Your file is successfully stored!**\n\nHere is the Permanent Link of your file: {share_link}",
                 parse_mode="Markdown",
                 reply_markup=InlineKeyboardMarkup(
                     [[InlineKeyboardButton("Open Link", url=share_link)],
-                     [InlineKeyboardButton("Bots Channel", url=f"{UR_CHANNEL}"),
-                      InlineKeyboardButton("Support Group", url=f"{UR_GROUP}")]]
+                     [InlineKeyboardButton("Bots Channel", url=f"https://telegram.me/{UR_CHANNEL}"),
+                      InlineKeyboardButton("Support Group", url=f"https://telegram.me/{UR_GROUP}")]]
                 ),
                 disable_web_page_preview=True
             )
@@ -304,11 +302,11 @@ async def sts(c, m):
     await m.reply_text(text=f"**Total Users in DB:** `{total_users}`", parse_mode="Markdown", quote=True)
 
 
-@Bot.on_message(filters.private & filters.command("ban_user") & filters.user(BOT_OWNER))
+@Bot.on_message(filters.private & filters.command("ban") & filters.user(BOT_OWNER))
 async def ban(c, m):
     if len(m.command) == 1:
         await m.reply_text(
-            f"Use this command to ban any user from the bot.\n\nUsage:\n\n`/ban_user user_id ban_duration ban_reason`\n\nEg: `/ban_user 1234567 28 You misused me.`\n This will ban user with id `1234567` for `28` days for the reason `You misused me`.",
+            f"Use this command to ban any user from the bot.\n\nUsage:\n\n`/ban user_id ban_duration ban_reason`\n\nEg: `/ban 1234567 28 You misused me.`\n This will ban user with id `1234567` for `28` days for the reason `You misused me`.",
             quote=True
         )
         return
@@ -340,11 +338,11 @@ async def ban(c, m):
         )
 
 
-@Bot.on_message(filters.private & filters.command("unban_user") & filters.user(BOT_OWNER))
+@Bot.on_message(filters.private & filters.command("unban") & filters.user(BOT_OWNER))
 async def unban(c, m):
     if len(m.command) == 1:
         await m.reply_text(
-            f"Use this command to unban any user.\n\nUsage:\n\n`/unban_user user_id`\n\nEg: `/unban_user 1234567`\n This will unban user with id `1234567`.",
+            f"Use this command to unban any user.\n\nUsage:\n\n`/unban user_id`\n\nEg: `/unban 1234567`\n This will unban user with id `1234567`.",
             quote=True
         )
         return
