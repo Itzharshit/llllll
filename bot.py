@@ -129,8 +129,8 @@ async def start(bot, cmd):
             reply_markup=InlineKeyboardMarkup(
                 [
                     [
-                        InlineKeyboardButton("Support Group", url="https://t.me/{UR_GROUP}"),
-                        InlineKeyboardButton("Bots Channel", url="https://t.me/{UR_CHANNEL}")
+                        InlineKeyboardButton("Support Group", url="https://t.me/UR_GROUP"),
+                        InlineKeyboardButton("Bots Channel", url="https://t.me/UR_CHANNEL")
                     ],
                   
                 ]
@@ -252,8 +252,8 @@ async def main(bot, message):
                 parse_mode="Markdown",
                 reply_markup=InlineKeyboardMarkup(
                     [[InlineKeyboardButton("Open Link", url=share_link)],
-                     [InlineKeyboardButton("Bots Channel", url="https://t.me/{UR_CHANNEL}"),
-                      InlineKeyboardButton("Support Group", url="https://t.me/{UR_GROUP}")]]
+                     [InlineKeyboardButton("Bots Channel", url="https://t.me/UR_CHANNEL"),
+                      InlineKeyboardButton("Support Group", url="https://t.me/UR_GROUP")]]
                 ),
                 disable_web_page_preview=True
             )
