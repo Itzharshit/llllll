@@ -26,6 +26,8 @@ API_ID = Config.API_ID
 API_HASH = Config.API_HASH
 DB_CHANNEL = Config.DB_CHANNEL
 HOME_TEXT = Config.HOME_TEXT
+UR_CHANNEL = Config.UR_CHANNEL
+UR_GROUP = Config.UR_GROUP
 BOT_OWNER = Config.BOT_OWNER
 FORWARD_AS_COPY = Config.FORWARD_AS_COPY
 db = Database(Config.DATABASE_URL, BOT_USERNAME)
@@ -127,8 +129,8 @@ async def start(bot, cmd):
             reply_markup=InlineKeyboardMarkup(
                 [
                     [
-                        InlineKeyboardButton("Support Group", url="https://t.me/linux_repo"),
-                        InlineKeyboardButton("Bots Channel", url="https://t.me/Discovery_Updates")
+                        InlineKeyboardButton("Support Group", url="https://t.me/{UR_GROUP}"),
+                        InlineKeyboardButton("Bots Channel", url="https://t.me/{UR_CHANNEL}")
                     ],
                   
                 ]
@@ -158,7 +160,7 @@ async def start(bot, cmd):
                                 InlineKeyboardButton("🤖 Join Updates Channel", url=invite_link.invite_link)
                             ],
                             [
-                                InlineKeyboardButton("🔄 Refresh / Try Again",
+                                InlineKeyboardButton("Refresh",
                                                      url=f"https://telegram.dog/{BOT_USERNAME}?start=AbirHasan2005_{file_id}")
                             ]
                         ]
@@ -250,8 +252,8 @@ async def main(bot, message):
                 parse_mode="Markdown",
                 reply_markup=InlineKeyboardMarkup(
                     [[InlineKeyboardButton("Open Link", url=share_link)],
-                     [InlineKeyboardButton("Bots Channel", url="https://t.me/Discovery_Updates"),
-                      InlineKeyboardButton("Support Group", url="https://t.me/linux_repo")]]
+                     [InlineKeyboardButton("Bots Channel", url="https://t.me/{UR_CHANNEL}"),
+                      InlineKeyboardButton("Support Group", url="https://t.me/{UR_GROUP}")]]
                 ),
                 disable_web_page_preview=True
             )
