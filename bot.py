@@ -182,7 +182,7 @@ async def start(bot, cmd):
             elif FORWARD_AS_COPY is False:
                 send_stored_file = await bot.forward_messages(chat_id=cmd.from_user.id, from_chat_id=DB_CHANNEL,
                                                               message_ids=file_id)
-            ###################lol
+           
 @Bot.on_message(filters.document | filters.video | filters.audio & ~filters.edited)
 async def main(bot, message):
     if message.chat.type == "private":
