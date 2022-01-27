@@ -17,6 +17,9 @@
         "UR_CHANNEL": {
             "description": "Your channel username without @"
         },
+        "UR_GROUP": {
+            "description": "Your group username without @"
+        },
         "API_HASH": {
             "description": "Get this value from my.telegram.org or @TeleORG_Bot"
         },
