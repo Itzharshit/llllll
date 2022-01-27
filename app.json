@@ -14,6 +14,9 @@
         "API_ID": {
             "description": "Get this value from my.telegram.org or @TeleORG_Bot"
         },
+        "UR_CHANNEL": {
+            "description": "Your channel username without @"
+        },
         "API_HASH": {
             "description": "Get this value from my.telegram.org or @TeleORG_Bot"
         },
