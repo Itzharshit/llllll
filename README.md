@@ -1,5 +1,5 @@
 # PyroFilesStoreBot
-This is Telegram Parmanent Files Store Bot by [@AbirHasan2005](https://github.com/AbirHasan2005).
+NOTE: full source code is written by Abir hasan, i just changed some codes and made it easy to deploy
 
 * **Language:** [Python3](https://www.python.org)
 * **Library:** [Pyrogram](https://docs.pyrogram.org)
@@ -9,9 +9,6 @@ This is Telegram Parmanent Files Store Bot by [@AbirHasan2005](https://github.co
 - In Channel Add Bot as Admin with Edit Rights. When you will send any file or media in Channel it will Edit the Broadcast Message with Saved Link Button.
 - You can also Broadcast anythings via this Bot.
 - You can also Do Force Sub to a Channel to allow access the Bot.
-
-### Demo Bot:
-<a href="https://t.me/SuperFilesStoreBot"><img src="https://img.shields.io/badge/Demo-Telegram%20Bot-blue.svg?logo=telegram"></a>
 
 ## Configs:
 - `API_ID` - Get this from [@TeleORG_Bot](https://t.me/TeleORG_Bot)
@@ -34,6 +31,10 @@ This is Telegram Parmanent Files Store Bot by [@AbirHasan2005](https://github.co
          - Put all banned user IDs & Separate with space.
 - `BANNED_CHAT_IDS` - All Banned Channel IDs *(Optional)*
 	- Put all banned channel IDs & Separate with space.
+- `UR_CHANNEL` - Your channel username.
+	- to set your channel in start button.
+- `UR_GROUP` - yur group username.
+	-  to set your group in start button.
 
 ### Deploy Now:
 [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
@@ -42,13 +43,9 @@ This is Telegram Parmanent Files Store Bot by [@AbirHasan2005](https://github.co
 ```
 start - start the bot
 status - Show number of users in DB
-broadcast - Broadcast replied message to DB Users
 ```
 
-### Support Group:
-<a href="https://t.me/linux_repo"><img src="https://img.shields.io/badge/Telegram-Join%20Telegram%20Group-blue.svg?logo=telegram"></a>
-
-### Follow on:
+### Credits:
 <p align="left">
 <a href="https://github.com/AbirHasan2005"><img src="https://img.shields.io/badge/GitHub-Follow%20on%20GitHub-inactive.svg?logo=github"></a>
 </p>
