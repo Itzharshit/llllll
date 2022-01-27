@@ -17,6 +17,9 @@
         "UR_CHANNEL": {
             "description": "Your channel username without @"
         },
+        "DATABASE_URL": {
+            "description": "your mongo db url"
+        },
         "UR_GROUP": {
             "description": "Your group username without @"
         },
