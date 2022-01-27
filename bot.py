@@ -27,7 +27,7 @@ UR_CHANNEL = Config.UR_CHANNEL
 UR_GROUP = Config.UR_GROUP
 BOT_OWNER = Config.BOT_OWNER
 FORWARD_AS_COPY = Config.FORWARD_AS_COPY
-db = Database(Config.DATABASE_URL, BOT_USERNAME)
+db = Database(Config.BOT_USERNAME)
 broadcast_ids = {}
 Bot = Client(BOT_USERNAME, bot_token=BOT_TOKEN, api_id=API_ID, api_hash=API_HASH)
 
